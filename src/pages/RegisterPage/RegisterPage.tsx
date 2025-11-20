@@ -5,6 +5,8 @@ import logo from "../../assets/img/로고b.png";
 import bookmark from "./책갈피.png";
 import { useNavigate } from "react-router-dom";
 
+const API = import.meta.env.VITE_API_URL ?? "";
+
 // ✅ 비밀번호 유효성 검사 함수
 function validatePassword(password: string) {
   const basicRule =
@@ -87,7 +89,7 @@ function RegisterPage() {
     }
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/users/check-id",
+        `${API}/api/users/check-id`,
         { userId: form.userId }
       );
       setErrorMessage((prev) => ({ ...prev, userId: res.data.message }));
@@ -144,7 +146,7 @@ function RegisterPage() {
     }
 
     try {
-      const res = await axios.post("http://localhost:4000/api/users/register", {
+      const res = await axios.post(`${API}/api/users/register`, {
         username: form.username,
         userId: form.userId,
         password: form.password,

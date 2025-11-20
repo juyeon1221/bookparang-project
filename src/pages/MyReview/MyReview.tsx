@@ -5,6 +5,7 @@ import ReviewArea from "../../components/MyReviewContent/MyReviewArea/ReviewArea
 import styles from "./MyReview.module.css";
 import arrow from "./왼쪽_화살표.svg";
 import Wishlist from "../../components/Wishlist/Wishlist";
+import ReadingCalendar from "../../components/ReadingCalendar/ReadingCalendar";
 
 export default function MyReview() {
   const [activeTab, setActiveTab] = useState("구매도서");
@@ -31,9 +32,7 @@ export default function MyReview() {
           {activeTab === "회원정보" && <EditProfile />}
           {activeTab === "구매도서" && <ReviewArea />}
           {activeTab === "관심도서" && <Wishlist />}
-          {activeTab === "독서기록" && (
-            <div className={styles.placeholder}>독서 기록 기능 준비 중입니다 ✏️</div>
-          )}
+          {activeTab === "독서기록" && <ReadingCalendar />}
         </div>
       </div>
     </div>

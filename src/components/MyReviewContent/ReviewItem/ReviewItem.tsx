@@ -8,10 +8,12 @@ export default function ReviewItem({ review, onUpdated }) {
   const [comment, setComment] = useState(review.comment);
   const [rating, setRating] = useState(review.rating);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:4000/api/reviews/${review._id}`,
+        `${API}/api/reviews/${review._id}`,
         { comment, rating },
         { withCredentials: true }
       );
@@ -27,7 +29,7 @@ export default function ReviewItem({ review, onUpdated }) {
     if (!window.confirm("리뷰를 삭제하시겠습니까?")) return;
     try {
       await axios.delete(
-        `http://localhost:4000/api/reviews/${review._id}`,
+        `${API}/api/reviews/${review._id}`,
         { withCredentials: true }
       );
       alert("리뷰가 삭제되었습니다!");

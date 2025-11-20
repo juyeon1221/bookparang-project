@@ -1,4 +1,3 @@
-// controllers/inquiryController.js
 import Inquiry from "../models/Inquiry.js";
 
 // 사용자 문의 작성

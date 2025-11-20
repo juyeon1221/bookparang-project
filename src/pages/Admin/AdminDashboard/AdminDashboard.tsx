@@ -1,4 +1,3 @@
-// src/pages/Admin/AdminDashboard.jsx
 import { Link, Routes, Route } from "react-router-dom";
 import styles from "./AdminDashboard.module.css";
 import Inquiries from "../Inquiries/Inquiries";

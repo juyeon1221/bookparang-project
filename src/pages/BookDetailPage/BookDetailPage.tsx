@@ -31,11 +31,13 @@ const BookDetailPage: React.FC = () => {
 
   const [isFavorited, setIsFavorited] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 도서 상세 불러오기
   const fetchBook = useCallback(async () => {
     if (!isbn) return;
     try {
-      const res = await axios.get(`/api/books/detail/${isbn}`);
+      const res = await axios.get(`${API}/api/books/detail/${isbn}`);
       setBook(res.data);
     } catch (err) {
       console.error("❌ 상세 도서 불러오기 실패:", err);
@@ -48,7 +50,7 @@ const BookDetailPage: React.FC = () => {
   const fetchReviews = useCallback(async () => {
     if (!isbn) return;
     try {
-      const res = await axios.get(`http://localhost:4000/api/reviews/${isbn}`);
+      const res = await axios.get(`${API}/api/reviews/${isbn}`);
       console.log("📥 리뷰 데이터 확인:", res.data);
       setReviews(res.data);
     } catch (err) {
@@ -66,11 +68,10 @@ const BookDetailPage: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get(`${API}/api/users/me`, {
           withCredentials: true, // ✅ 쿠키 전송 필요
         });
 
-        // 응답 예시: { nickname: "홍길동", userId: "user1234" }
         setUser(res.data);
         setIsLoggedIn(true);
       } catch (err) {
@@ -87,7 +88,7 @@ const BookDetailPage: React.FC = () => {
   const fetchFavoriteStatus = useCallback(async () => {
     if (!isbn || !isLoggedIn) return;
     try {
-      const res = await axios.get(`http://localhost:4000/api/wishlist/${isbn}`, {
+      const res = await axios.get(`${API}/api/wishlist/${isbn}`, {
         withCredentials: true,
       });
       setIsFavorited(res.data.isFavorited);
@@ -105,12 +106,12 @@ const BookDetailPage: React.FC = () => {
 
     try {
       if (isFavorited) {
-        await axios.delete(`http://localhost:4000/api/wishlist/${isbn}`, {
+        await axios.delete(`${API}/api/wishlist/${isbn}`, {
           withCredentials: true,
         });
         setIsFavorited(false);
       } else {
-        await axios.post(`http://localhost:4000/api/wishlist/${isbn}`, {}, {
+        await axios.post(`${API}/api/wishlist/${isbn}`, {}, {
           withCredentials: true,
         });
         setIsFavorited(true);
@@ -122,7 +123,7 @@ const BookDetailPage: React.FC = () => {
 
   const addToCart = async (isbn: string) => {
     try {
-      await axios.post(`http://localhost:4000/api/cart/${isbn}`, {}, { withCredentials: true });
+      await axios.post(`${API}/api/cart/${isbn}`, {}, { withCredentials: true });
       alert("🛒 장바구니에 추가되었습니다!");
     } catch (err) {
       console.error("❌ 장바구니 추가 실패:", err);

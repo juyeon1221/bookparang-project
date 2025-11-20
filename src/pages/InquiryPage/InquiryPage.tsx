@@ -16,14 +16,16 @@ function InquiryPage() {
   const [form, setForm] = useState({ title: "", content: "" });
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const fetchInquiries = async () => {
-    const res = await axios.get("http://localhost:4000/api/inquiries/my", { withCredentials: true });
+    const res = await axios.get(`${API}/api/inquiries/my`, { withCredentials: true });
     setInquiries(res.data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post("http://localhost:4000/api/inquiries", form, { withCredentials: true });
+    await axios.post(`${API}/api/inquiries`, form, { withCredentials: true });
     setForm({ title: "", content: "" });
     fetchInquiries();
   };

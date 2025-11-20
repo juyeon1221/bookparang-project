@@ -19,6 +19,8 @@ export default function NewBookPage() {
   const [selectedCategory, setSelectedCategory] = useState("종합 신간");
   const [sort, setSort] = useState<"latest" | "priceAsc" | "priceDesc" | "rating">("latest");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 찜 토글
   const toggleFavorite = async (isbn: string | undefined) => {
     if (!isbn) {
@@ -32,13 +34,13 @@ export default function NewBookPage() {
 
     try {
       if (favorites[isbn]) {
-        await axios.delete(`http://localhost:4000/api/wishlist/${isbn}`, {
+        await axios.delete(`${API}/api/wishlist/${isbn}`, {
           withCredentials: true,
         });
         setFavorites((prev) => ({ ...prev, [isbn]: false }));
       } else {
         await axios.post(
-          `http://localhost:4000/api/wishlist/${isbn}`,
+          `${API}/api/wishlist/${isbn}`,
           {},
           { withCredentials: true }
         );
@@ -58,7 +60,7 @@ export default function NewBookPage() {
 
     try {
       await axios.post(
-        `http://localhost:4000/api/cart/${isbn}`,
+        `${API}/api/cart/${isbn}`,
         {},
         { withCredentials: true }
       );
@@ -78,7 +80,7 @@ export default function NewBookPage() {
       try {
         // ✅ 로그인 상태 확인
         try {
-          const res = await axios.get("http://localhost:4000/api/users/me", {
+          const res = await axios.get(`${API}/api/users/me`, {
             withCredentials: true,
           });
           setIsLoggedIn(!!res.data);
@@ -93,7 +95,7 @@ export default function NewBookPage() {
             : { category: selectedCategory, sort }; // ✅ 정렬 기준 추가
 
         const res = await axios.get<Book[]>(
-          "http://localhost:4000/api/books/new",
+          `${API}/api/books/new`,
           { params }
         );
 
@@ -112,7 +114,7 @@ export default function NewBookPage() {
             rating: b.rating ?? 0,
             image:
               b.image ??
-              `https://via.placeholder.com/150?text=${encodeURIComponent(
+              `https://placehold.co/150?text=${encodeURIComponent(
                 b.title.slice(0, 15)
               )}`,
             publisher: b.publisher ?? "",
@@ -132,7 +134,7 @@ export default function NewBookPage() {
 
             try {
               const res = await axios.get<Review[]>(
-                `http://localhost:4000/api/reviews/${book.isbn}`
+                `${API}/api/reviews/${book.isbn}`
               );
               const reviews = res.data;
               if (reviews.length > 0) {
@@ -155,7 +157,7 @@ export default function NewBookPage() {
               if (!book.isbn) return;
               try {
                 const res = await axios.get(
-                  `http://localhost:4000/api/wishlist/${book.isbn}`,
+                  `${API}/api/wishlist/${book.isbn}`,
                   { withCredentials: true }
                 );
                 favMap[book.isbn] = res.data.isFavorited;

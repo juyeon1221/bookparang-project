@@ -20,12 +20,14 @@ const WishlistTab: React.FC = () => {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [confirmBook, setConfirmBook] = useState<Book | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 찜 목록 불러오기
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
         console.log("📨 /api/wishlist 요청 시작");
-        const res = await axios.get("http://localhost:4000/api/wishlist", {
+        const res = await axios.get(`${API}/api/wishlist`, {
           withCredentials: true,
         });
         console.log("📥 /api/wishlist 응답:", res.data);
@@ -44,7 +46,7 @@ const WishlistTab: React.FC = () => {
   // ✅ 찜 해제
   const removeFromWishlist = async (isbn: string) => {
     try {
-      await axios.delete(`http://localhost:4000/api/wishlist/${isbn}`, {
+      await axios.delete(`${API}/api/wishlist/${isbn}`, {
         withCredentials: true,
       });
       setWishlist((prev) => prev.filter((w) => w.book?.isbn !== isbn));
@@ -57,7 +59,7 @@ const WishlistTab: React.FC = () => {
   const addToCart = async (isbn: string) => {
     try {
       await axios.post(
-        `http://localhost:4000/api/cart/${isbn}`,
+        `${API}/api/cart/${isbn}`,
         {},
         { withCredentials: true }
       );
@@ -79,13 +81,13 @@ const WishlistTab: React.FC = () => {
 
     try {
       await axios.post(
-        "http://localhost:4000/api/purchase",
+        `${API}/api/purchase`,
         { books: [{ isbn: confirmBook.isbn, price: confirmBook.salePrice || 0 }] },
         { withCredentials: true }
       );
 
       await axios.delete(
-        `http://localhost:4000/api/wishlist/${confirmBook.isbn}`,
+        `${API}/api/wishlist/${confirmBook.isbn}`,
         { withCredentials: true }
       );
 

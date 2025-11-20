@@ -11,6 +11,7 @@ const router = express.Router();
  * 장바구니에 책 추가
  */
 router.post("/:isbn", auth, async (req, res) => {
+  const API_BASE_URL = process.env.API_BASE_URL;
   const { isbn } = req.params;
   const userId = req.user._id;
 
@@ -32,7 +33,7 @@ router.post("/:isbn", auth, async (req, res) => {
     // 3️⃣ 없으면 Book API에서 새로 가져와 저장
     if (!book) {
       try {
-        const resBook = await axios.get(`http://localhost:4000/api/books/detail/${isbn}`);
+        const resBook = await axios.get(`${API_BASE_URL}/api/books/detail/${isbn}`);
         console.log("📘 도서 상세 응답:", resBook.data);
         const newBook = resBook.data;
 

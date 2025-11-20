@@ -1,4 +1,3 @@
-// src/components/FilterSidebar/FilterSidebar.tsx
 import styles from "./FilterSidebar.module.css";
 
 export default function FilterSidebar() {

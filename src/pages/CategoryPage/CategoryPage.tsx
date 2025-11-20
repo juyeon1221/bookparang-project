@@ -25,6 +25,8 @@ export default function CategoryPage() {
 
   const [sort, setSort] = useState<"latest" | "priceAsc" | "priceDesc" | "rating">("latest");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ URL의 categoryId → category 이름 매핑
   useEffect(() => {
     const idFromUrl = searchParams.get("category");
@@ -47,7 +49,7 @@ export default function CategoryPage() {
       try {
         // 로그인 상태 확인
         try {
-          const res = await axios.get("http://localhost:4000/api/users/me", {
+          const res = await axios.get(`${API}/api/users/me`, {
             withCredentials: true,
           });
           setIsLoggedIn(!!res.data);
@@ -61,7 +63,7 @@ export default function CategoryPage() {
             : { category: selectedCategory, sort };
 
         const res = await axios.get<Book[]>(
-          "http://localhost:4000/api/books/all",
+          `${API}/api/books/all`,
           { params }
         );
 
@@ -94,7 +96,7 @@ export default function CategoryPage() {
           mappedBooks.map(async (book) => {
             try {
               const res = await axios.get<Review[]>(
-                `http://localhost:4000/api/reviews/${book.isbn}`
+                `${API}/api/reviews/${book.isbn}`
               );
               const reviews = res.data;
               if (reviews.length > 0) {

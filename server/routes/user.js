@@ -28,7 +28,7 @@ router.post("/logout", logoutUser);
 router.delete("/delete/:userId", auth, deleteUser);
 router.get("/me", auth, getUserProfile);
 router.get("/check-nickname", checkNickname); // 닉네임 중복 체크
-router.put("/update", auth, upload.single("profileImage"), updateUser); // ✅ 이거 하나만 남겨!
+router.put("/update", auth, upload.single("profileImage"), updateUser);
 router.get("/check", auth, (req, res) => res.json({ user: req.user }));
 
 export default router;

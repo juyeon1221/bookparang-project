@@ -19,12 +19,14 @@ const ReviewTab: React.FC = () => {
   const [purchasedBooks, setPurchasedBooks] = useState<PurchasedBook[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [purchaseRes, reviewRes] = await Promise.all([
-          axios.get("http://localhost:4000/api/purchase/my", { withCredentials: true }),
-          axios.get("http://localhost:4000/api/reviews/my", { withCredentials: true }),
+          axios.get("${API}/api/purchase/my", { withCredentials: true }),
+          axios.get("${API}/api/reviews/my", { withCredentials: true }),
         ]);
         setPurchasedBooks(purchaseRes.data);
         setReviews(reviewRes.data);
@@ -58,14 +60,14 @@ const ReviewTab: React.FC = () => {
     try {
       if (target._id) {
         await axios.put(
-          `http://localhost:4000/api/reviews/${target._id}`,
+          `${API}/api/reviews/${target._id}`,
           target,
           { withCredentials: true }
         );
         alert("✏️ 리뷰가 수정되었습니다!");
       } else {
         await axios.post(
-          "http://localhost:4000/api/reviews",
+          `${API}/api/reviews`,
           target,
           { withCredentials: true }
         );
@@ -84,7 +86,7 @@ const ReviewTab: React.FC = () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-      await axios.delete(`http://localhost:4000/api/reviews/${target._id}`, {
+      await axios.delete(`${API}/api/reviews/${target._id}`, {
         withCredentials: true,
       });
       setReviews((prev) => prev.filter((r) => r.bookIsbn !== isbn));

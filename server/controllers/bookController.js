@@ -83,36 +83,57 @@ export const getBookDetail = async (req, res) => {
 
   try {
     // 1️⃣ 알라딘 API 호출
-    const { data } = await axios.get("https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx", {
-      params: {
-        ttbkey: process.env.ALADIN_TTB_KEY,
-        ItemIdType: "ISBN", // ✅ ISBN13 대신 ISBN
-        ItemId: isbn,
-        Output: "JS",
-        Version: "20131101",
-        // SearchTarget: "eBook",  ❌ 제거 (없애야 조회 잘 됨)
-        Cover: "Big",
-      },
-    });
+    const { data } = await axios.get(
+      "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx",
+      {
+        params: {
+          ttbkey: process.env.ALADIN_TTB_KEY,
+          ItemIdType: "ISBN13", // 🔥 ISBN13이 더 정확함
+          ItemId: isbn,
+          Output: "JS",
+          Version: "20131101",
+          Cover: "Big",
+        },
+      }
+    );
 
     console.log("📗 Aladin API 응답:", data);
 
-    if (!data?.item?.length) {
-      return res.status(404).json({ message: "Book not found" });
+    // 📌 2️⃣ 알라딘 API 에러 처리 (가장 중요)
+    if (data.errorCode) {
+      console.warn("📕 Aladin API 에러:", data.errorMessage);
+
+      return res.status(404).json({
+        success: false,
+        message: "해당 ISBN의 도서가 알라딘에 존재하지 않습니다.",
+        isbn,
+      });
+    }
+
+    // 📌 3️⃣ item 배열이 없거나 빈 경우 처리
+    if (!data?.item || data.item.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "도서 정보를 찾을 수 없습니다.",
+        isbn,
+      });
     }
 
     const book = data.item[0];
 
     const mapped = {
-      isbn: book.isbn13 || book.isbn, // ✅ 둘 다 대응
+      isbn: book.isbn13 || book.isbn,
       title: book.title || "제목 없음",
       author: book.author || "작자 미상",
       publisher: book.publisher || "",
       listPrice: book.priceStandard || 0,
       salePrice: book.priceSales || 0,
-      discountRate: book.priceStandard
-        ? Math.round(((book.priceStandard - book.priceSales) / book.priceStandard) * 100)
-        : 0,
+      discountRate:
+        book.priceStandard
+          ? Math.round(
+            ((book.priceStandard - book.priceSales) / book.priceStandard) * 100
+          )
+          : 0,
       category: book.categoryName || "",
       summary: book.description || "",
       image: book.cover || "",
@@ -120,16 +141,24 @@ export const getBookDetail = async (req, res) => {
       pubDate: book.pubDate || "",
     };
 
-    res.json(mapped);
+    return res.json(mapped);
   } catch (err) {
-    console.error("❌ 도서 상세 조회 실패 (전체 로그):", err);
+    // 📌 4️⃣ catch에서도 항상 응답 보내기
+    console.error("❌ 도서 상세 조회 실패:", err.message);
+
+    // 알라딘에서 XML 에러를 반환하면 err.response가 존재할 수 있음
     if (err.response) {
-      console.error("🔍 상태 코드:", err.response.status);
-      console.error("🔍 응답 데이터:", err.response.data);
+      console.error("🔻 Aladin Error Response:", err.response.data);
     }
-    res.status(500).json({ message: "Failed to fetch book detail" });
+
+    return res.status(500).json({
+      success: false,
+      message: "도서 상세 조회 중 오류가 발생했습니다.",
+      isbn,
+    });
   }
 };
+
 
 // ✅ 상위 카테고리 매핑 테이블
 const CATEGORY_MAP = [

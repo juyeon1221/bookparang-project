@@ -1,0 +1,615 @@
+.calendarWrapper {
+  font-family: 'Pretendard', sans-serif;
+  max-width: 931px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: left;
+  color: var(--light-gray-100);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 44px;
+}
+
+.header span {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--light-gray-100);
+}
+
+.navButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--light-gray-40);
+  background-color: var(--light-bg-color);
+  display: flex;
+  justify-content: center;
+  /* 가로 방향 중앙 정렬 */
+  align-items: center;
+  /* 세로 방향 중앙 정렬 */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--light-gray-100);
+}
+
+.navButton:hover {
+  background-color: var(--light-primary-color);
+}
+
+.arrowIcon {
+  fill: var(--light-bg-color);
+  width: 18px;
+  height: 18px;
+}
+
+/* 요일 그리드 */
+.weekdaysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+  /* 요일과 날짜 사이 간격 */
+}
+
+.dayLabel {
+  text-align: center;
+  padding: 4px 0;
+  font-weight: 600;
+  font-size: 1.25rem;
+  background: none;
+  color: var(--light-gray-100);
+}
+
+.dayLabel.sun {
+  color: #CC1D1D;
+}
+
+.dayLabel.sat {
+  color: #0034B9;
+}
+
+/* 날짜 그리드 */
+.datesGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 169px;
+  /* 기본 데스크탑 높이 */
+}
+
+.dateCell {
+  border: 1px solid var(--light-gray-40);
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+  cursor: default;
+  position: relative;
+  font-size: 1.25rem;
+  font-weight: 600;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.dateCell.disabled {
+  background: var(--light-bg-color);
+}
+
+.dateCell.disabled:hover {
+  background-color: var(--light-bg-color);
+}
+
+.dateCell.hasRecord {
+  cursor: pointer;
+  background-color: var(--light-bg-color);
+  transition: background-color 0.3s;
+}
+
+.dateCell:hover {
+  background-color: var(--light-gray-10);
+}
+
+.dateNumber {
+  font-weight: 600;
+}
+
+/* 책 썸네일 */
+.recordThumbnail {
+  width: 91px;
+  height: 129px;
+  object-fit: cover;
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+}
+
+/* 오버레이 탭 */
+.overlayTab {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 8px);
+  width: 468px;
+  height: 189px;
+  border: 1px solid var(--light-primary-color);
+  border-radius: 8px;
+  background-color: var(--light-bg-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  z-index: 100;
+  padding: 12px;
+}
+
+.overlayTabItem {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 10px;
+}
+
+.overlayTabItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bookThumbnail {
+  width: 53px;
+  height: 75px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.bookInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.bookTitle {
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: var(--light-gray-100);
+}
+
+.bookAuthor {
+  color: var(--light-gray-100);
+  font-size: 0.75rem;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bookDate {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--light-gray-100);
+  text-align: right;
+}
+
+.calendarWrapper {
+  position: relative;
+}
+
+.datesGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.dateCell {
+  padding: 8px;
+  border: 1px solid var(--light-gray-10);
+  cursor: pointer;
+  position: relative;
+}
+
+.thumbnail {
+  width: 28px;
+  height: 40px;
+  margin-top: 4px;
+}
+
+.modalBackground {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: var(--light-bg-color);
+  padding: 16px;
+  border-radius: 8px;
+  width: 320px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.bookList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bookItem {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.bookImage {
+  width: 50px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.loader {
+  text-align: center;
+  padding: 12px;
+  color: var(--light-gray-70);
+}
+
+/* 단일 기록용 큰 썸네일 */
+.bigThumbnail {
+  width: 85px;
+  height: 120px;
+  object-fit: cover;
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+}
+
+/* 여러 권 겹쳐진 카드 스택 */
+.stackGroup {
+  position: absolute;
+  top: 40px;
+  left: 6px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.stackItem {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* A — 촘촘 간격 10px */
+.stackItem:nth-child(2) {
+  left: 10px;
+}
+.stackItem:nth-child(3) {
+  left: 20px;
+}
+
+/* +N 뱃지 */
+.moreBadge {
+  position: absolute;
+  left: 20px;
+  top: -30px;
+  background: var(--light-primary-color);
+  color: var(--light-bg-color);
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* 삭제 버튼 */
+.deleteBtn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--point-color);
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* 모달 책 아이템 */
+.bookItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.bookItem:hover {
+  background: var(--light-gray-10);
+}
+
+/* 선택 모달 전체 */
+.selectView {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 각 책 아이템 (가로 배치) */
+.selectItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.selectItem:hover {
+  background: var(--light-gray-10);
+}
+
+/* 책 이미지 통일 (가로 리스트용) */
+.selectBookImg {
+  width: 55px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* 텍스트 영역 가로 정렬 */
+.selectBookText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 기록 모달 전체 */
+.recordView {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* 모달 제목 */
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* 기록된 책이 없을 때 */
+.noBooks {
+  text-align: center;
+  padding: 20px;
+  color: var(--light-gray-40);
+  font-size: 0.95rem;
+}
+
+/* 기록 아이템 */
+.recordItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.recordItem:hover {
+  background: var(--light-gray-10);
+}
+
+/* 기록 이미지 통일 */
+.recordItemImage {
+  width: 55px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* 텍스트 */
+.recordText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 제목, 작가는 기존 스타일 사용 가능 */
+.bookTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--light-gray-100);
+}
+
+.bookAuthor {
+  font-size: 0.85rem;
+  color: var(--light-gray-40);
+}
+
+/* 삭제 버튼 */
+.deleteBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--point-color);
+  padding: 4px;
+  margin-left: auto;
+  transition: color 0.2s ease;
+}
+
+/* 책 추가 버튼 */
+.addBtn {
+  width: 100%;
+  background: var(--light-primary-color);
+  color: var(--light-bg-color);
+  border: none;
+  padding: 12px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 8px;
+  transition: background 0.2s ease;
+}
+
+.addBtn:hover {
+  background: var(--light-primary-color);
+}
+
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .calendarWrapper {
+    width: 90vw;
+    padding: 8px;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .header {
+    margin-bottom: 18px;
+  }
+
+  .header span {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--light-gray-100);
+  }
+
+  .dayLabel {
+    text-align: center;
+    padding: 4px 0;
+    font-size: 1rem;
+    background: none;
+    font-weight: 400;
+  }
+
+  .datesGrid {
+    grid-auto-rows: minmax(60px, auto);
+    /* 최소 높이 60px, 내용 따라 늘어남 */
+  }
+
+  .dateCell {
+    min-height: 60px;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+  }
+
+  .dateCell.hasRecord {
+    min-height: 120px;
+  }
+
+  .dateNumber {
+    font-weight: 400;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .recordThumbnail {
+    width: 45px;
+    height: 65px;
+  }
+
+  .overlayTab {
+    width: 90vw;
+    height: 150px;
+  }
+
+  .bookThumbnail {
+    width: 45px;
+    height: 65px;
+  }
+
+  .overlayTab {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 343px;
+    height: 335px;
+  }
+
+  .dateCell.hasRecord:hover .dateNumber {
+    background-color: var(--light-primary-color);
+    color: var(--light-bg-color) !important;
+    border-radius: 50%;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+  }
+
+  /* 날짜가 비어있는 셀에 대해 호버 스타일 제거 */
+  .dateCell.disabled:hover .dateNumber {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  .selectBookText .bookTitle,
+  .selectBookText .bookAuthor,
+  .recordText .bookTitle,
+  .recordText .bookAuthor {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+
+  .bigThumbnail {
+    width: 50px;
+    height: 70px;
+    bottom: 4px;
+    left: 4px;
+  }
+
+  .smallThumbnail {
+    width: 26px;
+    height: 36px;
+  }
+
+  .stackItem {
+    width: 42px;
+    height: 58px;
+  }
+  .stackItem:nth-child(2) {
+    left: 8px;
+  }
+  .stackItem:nth-child(3) {
+    left: 16px;
+  }
+  .moreBadge {
+    left: 22px;
+    bottom: -6px;
+    font-size: 0.65rem;
+  }
+}

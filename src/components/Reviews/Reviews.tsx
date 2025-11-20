@@ -23,21 +23,23 @@ export default function Reviews({
   const [userRating, setUserRating] = useState(0);
   const [likedReviewIds, setLikedReviewIds] = useState<Set<string>>(new Set());
 
-useEffect(() => {
-  const stored = localStorage.getItem("likedReviews");
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored) as string[];
-      const validLiked = parsed.filter((id) =>
-        reviews.some((r) => r._id === id)
-      );
-      // ✅ setTimeout으로 렌더 후 반영 (렌더 타이밍 문제 해결)
-      setTimeout(() => setLikedReviewIds(new Set(validLiked)), 0);
-    } catch {
-      console.warn("likedReviews 복원 실패");
+  const API = import.meta.env.VITE_API_URL ?? "";
+
+  useEffect(() => {
+    const stored = localStorage.getItem("likedReviews");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as string[];
+        const validLiked = parsed.filter((id) =>
+          reviews.some((r) => r._id === id)
+        );
+        // ✅ setTimeout으로 렌더 후 반영 (렌더 타이밍 문제 해결)
+        setTimeout(() => setLikedReviewIds(new Set(validLiked)), 0);
+      } catch {
+        console.warn("likedReviews 복원 실패");
+      }
     }
-  }
-}, [reviews]);
+  }, [reviews]);
 
   /* ✅ likedReviewIds 변경 시 localStorage 저장 */
   useEffect(() => {
@@ -90,34 +92,31 @@ useEffect(() => {
   // ✅ 좋아요 토글
   const toggleLikeReview = async (reviewId: string) => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`/api/reviews/${reviewId}/helpful`, {
+      const res = await fetch(`${API}/api/reviews/${reviewId}/helpful`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",   // ⭐ 쿠키 포함
       });
 
       if (!res.ok) throw new Error("좋아요 반영 실패");
+
       const data: { helpful: number; liked: boolean } = await res.json();
 
-      setReviews(
-        reviews.map((r) =>
-          r._id === reviewId ? { ...r, helpful: data.helpful } : r
-        )
-      );
+      setReviews(reviews.map((r) =>
+        r._id === reviewId ? { ...r, helpful: data.helpful } : r
+      ));
 
-      // ✅ 상태 업데이트 + localStorage 자동 반영
       setLikedReviewIds((prev) => {
         const updated = new Set(prev);
         if (data.liked) updated.add(reviewId);
         else updated.delete(reviewId);
         return updated;
       });
+
     } catch (err) {
       console.error("❌ 좋아요 반영 실패:", err);
     }
   };
+
 
   // ✅ 리뷰 삭제
   const handleDeleteReview = async (reviewId: string, authorNickname: string) => {
@@ -129,7 +128,7 @@ useEffect(() => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`/api/reviews/${reviewId}`, {
+      const res = await fetch(`${API}/api/reviews/${reviewId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

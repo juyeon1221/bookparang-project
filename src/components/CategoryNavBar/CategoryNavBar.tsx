@@ -7,13 +7,10 @@ import CategoryDropdown from "./CategoryDropdown";
 export default function CategoryNavBar() {
   const [isOpen, setIsOpen] = useState(false);
   
-  const closeDropdown = () => setIsOpen(prev => !prev);
   const toggleDropdown = () => setIsOpen(prev => !prev);
 
   return (
-    <div className={styles.container}
-       onMouseLeave={closeDropdown}
-    >
+    <div className={styles.container}>
       <nav className={styles.navbar}>
         <div className={styles.navItemWrapper}>
           <button className={`${styles.navItem} ${isOpen ? styles.active : ""}`} 

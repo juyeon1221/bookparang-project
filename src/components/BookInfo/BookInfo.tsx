@@ -20,7 +20,6 @@ interface BookInfoProps {
 }
 
 const BookInfo: React.FC<BookInfoProps> = ({ book, reviews }) => {
-  // ✅ 이제 컴포넌트 안에서 안전하게 reviews 사용 가능
   const avgUserRating =
     reviews.length > 0
       ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length

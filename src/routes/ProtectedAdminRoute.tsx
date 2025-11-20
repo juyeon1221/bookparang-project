@@ -5,10 +5,12 @@ import axios from "axios";
 function ProtectedAdminRoute({ children }) {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get(`${API}/api/users/me`, {
           withCredentials: true,
         });
         setIsAdmin(res.data.role === "admin");

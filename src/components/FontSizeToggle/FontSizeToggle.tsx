@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./FontSizeToggle.module.css"; // ✅ 모듈 CSS import
+import styles from "./FontSizeToggle.module.css";
 
 export default function FontSizeToggle() {
   const [isLarge, setIsLarge] = useState(false);

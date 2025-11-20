@@ -6,6 +6,7 @@ import auth from "../middlewares/auth.js";
 import axios from "axios";
 
 const router = express.Router();
+const API_BASE_URL = process.env.API_BASE_URL;
 
 /**
  * ✅ [POST] /api/purchase
@@ -39,7 +40,7 @@ router.post("/", auth, async (req, res) => {
       // 3️⃣ Book이 없으면 외부 API or 내부 API 통해 생성
       if (!foundBook) {
         try {
-          const resBook = await axios.get(`http://localhost:4000/api/books/detail/${isbn}`);
+          const resBook = await axios.get(`${API_BASE_URL}/api/books/detail/${isbn}`);
           const data = resBook.data;
 
           foundBook = await Book.create({

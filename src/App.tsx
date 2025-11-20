@@ -27,7 +27,6 @@ import TermAgreement from "./components/TermAgreement/TermAgreement";
 import PrivacyConsent from "./components/PrivacyConsent/PrivacyConsent";
 import MarketingConsent from "./components/MarketingConsent/MarketingConsent";
 import CategoryPage from "./pages/CategoryPage/CategoryPage";
-import BooksPage from "./pages/BooksPage/BooksPage";
 
 function App() {
   const location = useLocation();
@@ -74,9 +73,6 @@ function App() {
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/inquiry" element={<InquiryPage />} />
         <Route path="/category" element={<CategoryPage />} />
-
-        <Route path="/test" element={<BooksPage />} />
-
 
         <Route path="/terms" element={<TermAgreement />} />
         <Route path="/privacy" element={<PrivacyConsent />} />

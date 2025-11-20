@@ -14,7 +14,7 @@ export default function Footer() {
           <div className={styles.companyInfo}>
             <p className={styles.companyName}>북파랑</p>
             <div className={styles.companycontents}>
-              <p>대표 : 홍연진, 김주연, 장다은</p>
+              <p>대표 : 파랑새 (홍연진, 김주연, 장다은)</p>
               <p>주소 : ㅇㅇ시 ㅇㅇ구 ㅇㅇ로 1, 1층(ㅇㅇ동,ㅇㅇ빌딩)</p>
               <p>사업자등록번호 : 000-00-00000  통신판매업신고 : 제 0000-00000호</p>
               <p>Copyright ⓒ Corp. All Rights Reserved.</p>

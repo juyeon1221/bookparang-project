@@ -40,6 +40,8 @@ export default function useBookSearch() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const searchBooks = async (query: string) => {
     if (!query.trim()) return;
     setLoading(true);
@@ -63,7 +65,7 @@ export default function useBookSearch() {
           const isbn = book.isbn.split(" ")[1] || book.isbn.split(" ")[0];
 
           try {
-            const aladinRes = await axios.get("http://localhost:4000/api/aladin", {
+            const aladinRes = await axios.get(`${API}/api/aladin`, {
               params: { isbn },
             });
 

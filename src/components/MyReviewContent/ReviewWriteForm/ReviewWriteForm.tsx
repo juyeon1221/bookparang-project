@@ -7,11 +7,13 @@ export default function ReviewWriteForm({ book, onAdded }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.post(
-        `http://localhost:4000/api/reviews/${book.isbn}`,
+        `${API}/api/reviews/${book.isbn}`,
         {
           rating,
           comment,

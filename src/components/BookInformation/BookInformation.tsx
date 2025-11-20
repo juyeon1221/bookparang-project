@@ -7,10 +7,12 @@ export default function BookInformation({ isbn }: { isbn: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const fetchBookDetail = async () => {
       try {
-        const response = await fetch(`/api/books/detail/${isbn}`);
+        const response = await fetch(`${API}/api/books/detail/${isbn}`);
         if (!response.ok) throw new Error("도서 정보를 불러올 수 없습니다.");
         const data: Book = await response.json();
         setBook(data);

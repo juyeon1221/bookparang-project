@@ -16,10 +16,12 @@ function Reports() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // 🔹 신고 목록 불러오기
   const fetchReports = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/reports", {
+      const res = await axios.get(`${API}/api/reports`, {
         withCredentials: true,
       });
       setReports(res.data);
@@ -39,7 +41,7 @@ function Reports() {
   const handleResolve = async (id: string) => {
     try {
       await axios.put(
-        `http://localhost:4000/api/reports/${id}/resolve`,
+        `${API}/api/reports/${id}/resolve`,
         {},
         { withCredentials: true }
       );

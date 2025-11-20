@@ -16,11 +16,13 @@ interface UserProfile {
 export default function MyPageSidebar({ activeTab, setActiveTab }: MyPageSidebarProps) {
   const [user, setUser] = useState<UserProfile | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 로그인된 유저 정보 가져오기
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get(`${API}/api/users/me`, {
           withCredentials: true, // 쿠키 포함
         });
         setUser(res.data);

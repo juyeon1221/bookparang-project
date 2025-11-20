@@ -16,7 +16,7 @@ export default function BookInfoPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isFavorited, setIsFavorited] = useState(false);
 
-  const API_BASE = "http://localhost:4000/api";
+  const API = import.meta.env.VITE_API_URL ?? "";
 
   // ✅ 평균 평점 계산
   const averageRating =
@@ -29,7 +29,7 @@ export default function BookInfoPage() {
     if (!isbn) return;
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BASE}/books/detail/${isbn}`);
+      const res = await axios.get(`${API}/api/books/detail/${isbn}`);
       setBook(res.data);
       setError(null);
     } catch (err) {
@@ -44,7 +44,7 @@ export default function BookInfoPage() {
   const fetchReviews = useCallback(async () => {
     if (!isbn) return;
     try {
-      const res = await axios.get(`${API_BASE}/reviews/${isbn}`);
+      const res = await axios.get(`${API}/api/reviews/${isbn}`);
       setReviews(res.data);
     } catch (err) {
       console.error("❌ 리뷰 목록 불러오기 실패:", err);
@@ -56,7 +56,7 @@ export default function BookInfoPage() {
     if (!isbn) return;
     try {
       await axios.post(
-        `http://localhost:4000/api/reviews/${isbn}`,
+        `${API}/api/reviews/${isbn}`,
         {
           rating: reviewData.rating,
           comment: reviewData.content, // ✅ comment 필드
@@ -82,7 +82,6 @@ export default function BookInfoPage() {
     if (!book) return;
     try {
       setIsFavorited((prev) => !prev);
-      // TODO: POST/DELETE API 연결
     } catch (err) {
       console.error("❌ 찜 토글 실패:", err);
     }
@@ -91,7 +90,7 @@ export default function BookInfoPage() {
   // ✅ 장바구니 추가 (연결 가능 자리만 확보)
   const addToCart = async (isbn: string) => {
     try {
-      await axios.post(`${API_BASE}/cart/${isbn}`, {}, { withCredentials: true });
+      await axios.post(`${API}/api/cart/${isbn}`, {}, { withCredentials: true });
       alert("🛒 장바구니에 추가되었습니다!");
     } catch (err) {
       console.error("❌ 장바구니 추가 실패:", err);

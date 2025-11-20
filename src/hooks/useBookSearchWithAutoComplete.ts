@@ -3,6 +3,8 @@ import axios from "axios";
 
 const KAKAO_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY as string;
 
+const API = import.meta.env.VITE_API_URL ?? "";
+
 /* -------------------- 타입 정의 -------------------- */
 export interface AladinBookDetail {
   listPrice?: number;
@@ -159,7 +161,7 @@ export default function useBookSearchWithAutoComplete() {
 
           try {
             const aladinRes = await axios.get<AladinBookDetail>(
-              "http://localhost:4000/api/books/aladin",
+              `${API}/api/books/aladin`,
               { params: { isbn } }
             );
 
@@ -178,7 +180,7 @@ export default function useBookSearchWithAutoComplete() {
               link: detail.link ?? book.url,
               categoryId: detail.categoryId ?? 0,
               categoryName: detail.categoryName ?? "기타",
-              pubDate: formattedDate, // ✅ 여기서 추가됨!
+              pubDate: formattedDate,
             };
           } catch {
             return {

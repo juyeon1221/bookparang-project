@@ -1,4 +1,3 @@
-// server/routes/reportRoutes.js
 import express from "express";
 import auth from "../middlewares/auth.js";
 import Report from "../models/Report.js";

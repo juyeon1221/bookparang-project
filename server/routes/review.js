@@ -1,4 +1,3 @@
-console.log("✅ review.js 라우터 파일 로드됨");
 import express from "express";
 import axios from "axios";
 import Review from "../models/Review.js";
@@ -7,7 +6,6 @@ import User from "../models/User.js";
 import auth from "../middlewares/auth.js";
 
 const router = express.Router();
-console.log("✅ review.js 라우터 파일 로드됨");
 
 /* ---------------------------- 내 리뷰 불러오기 ---------------------------- */
 router.get("/me", auth, async (req, res) => {
@@ -219,8 +217,4 @@ router.post("/:id/helpful", auth, async (req, res) => {
   }
 });
 
-
-
-
-console.log("✅ review.js 라우터 export 됨");
 export default router;

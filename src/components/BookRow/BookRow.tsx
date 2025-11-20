@@ -34,11 +34,13 @@ export default function BookRow({
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 로그인 상태 확인
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get(`${API}/api/users/me`, {
           withCredentials: true,
         });
         setIsLoggedIn(!!res.data);
@@ -152,7 +154,7 @@ export default function BookRow({
         </div>
       </div>
 
-      {/* 🩵 로그인 모달 */}
+      {/* 로그인 모달 */}
       {showModal && <LoginPromptModal onClose={() => setShowModal(false)} />}
     </>
   );

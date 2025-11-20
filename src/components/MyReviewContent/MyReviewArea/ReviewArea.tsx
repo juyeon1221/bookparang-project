@@ -11,12 +11,12 @@ export default function ReviewArea() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [refresh, setRefresh] = useState(false);
 
-  const API_BASE = "http://localhost:4000/api";
+  const API = import.meta.env.VITE_API_URL ?? "";
 
   /** ✅ 구매 목록 불러오기 */
   const fetchPurchasedBooks = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/purchase/my`, { withCredentials: true });
+      const res = await axios.get(`${API}/api/purchase/my`, { withCredentials: true });
       setPurchasedBooks(res.data);
     } catch (err) {
       console.error("❌ 구매 목록 불러오기 실패:", err);
@@ -26,7 +26,7 @@ export default function ReviewArea() {
   /** ✅ 내 리뷰 불러오기 */
   const fetchMyReviews = async () => {
     try {
-      const res = await axios.get(`${API_BASE}/reviews/me`, { withCredentials: true });
+      const res = await axios.get(`${API}/api/reviews/me`, { withCredentials: true });
       setReviews(res.data);
     } catch (err) {
       console.error("❌ 내 리뷰 불러오기 실패:", err);

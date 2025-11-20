@@ -33,7 +33,7 @@ export default function BookDetailTop({
       tag: "전자책",
     };
 
-    // 2️⃣ 내 서재(localStorage or API)에 추가
+    // 2️⃣ 내 서재에 추가
     const library = JSON.parse(localStorage.getItem("myLibrary") || "[]");
     const exists = library.some((b: { id: number }) => b.id === purchasedBook.id);
     if (!exists) {

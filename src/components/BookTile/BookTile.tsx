@@ -28,7 +28,7 @@ export default function BookTile({
 
   const handleClick = () => {
     if (onClick) onClick();
-    else if (book.isbn) navigate(`/book/${book.isbn}`); // ✅ 상세 페이지로 이동
+    else if (book.isbn) navigate(`/book/${book.isbn}`);
   };
 
   return (

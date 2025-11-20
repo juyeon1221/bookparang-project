@@ -17,14 +17,16 @@ function Inquiries() {
   const [selected, setSelected] = useState<Inquiry | null>(null);
   const [answer, setAnswer] = useState("");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const fetchInquiries = async () => {
-    const res = await axios.get("http://localhost:4000/api/inquiries", { withCredentials: true });
+    const res = await axios.get(`${API}/api/inquiries`, { withCredentials: true });
     setInquiries(res.data);
   };
 
   const handleAnswer = async (id: string) => {
     await axios.put(
-      `http://localhost:4000/api/inquiries/${id}/answer`,
+      `${API}/api/inquiries/${id}/answer`,
       { answer },
       { withCredentials: true }
     );

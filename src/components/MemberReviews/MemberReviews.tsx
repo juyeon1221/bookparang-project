@@ -20,10 +20,12 @@ export default function MemberReviews() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const fetchRandomReviews = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/reviews/random?count=3");
+        const res = await axios.get(`${API}/api/reviews/random?count=3`);
 
         console.log("📦 서버에서 받아온 리뷰 원본:", res.data);
 
@@ -33,7 +35,7 @@ export default function MemberReviews() {
           id: r._id,
           title: r.book?.title ?? "제목 없음",
           author: r.book?.author ?? "작자 미상",
-          img: r.book?.image ?? "https://via.placeholder.com/100x140?text=No+Image",
+          img: r.book?.image ?? "https://placehold.co/100x140?text=No+Image",
           ment: r.comment,
           reviewerName: r.user.nickname,
           reviewerImg: "https://cdn-icons-png.flaticon.com/512/847/847969.png",

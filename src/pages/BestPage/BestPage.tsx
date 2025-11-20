@@ -20,10 +20,12 @@ const BestPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 로그인 확인
   const fetchUser = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/users/me", {
+      const res = await axios.get(`${API}/api/users/me`, {
         withCredentials: true,
       });
       if (res.data) setIsLoggedIn(true);
@@ -42,7 +44,7 @@ const BestPage: React.FC = () => {
         bookList.map(async (book) => {
           try {
             const res = await axios.get(
-              `http://localhost:4000/api/wishlist/${book.isbn}`,
+              `${API}/api/wishlist/${book.isbn}`,
               { withCredentials: true }
             );
             favMap[book.isbn] = res.data.isFavorited;
@@ -65,12 +67,12 @@ const BestPage: React.FC = () => {
 
     try {
       if (favorites[isbn]) {
-        await axios.delete(`http://localhost:4000/api/wishlist/${isbn}`, {
+        await axios.delete(`${API}/api/wishlist/${isbn}`, {
           withCredentials: true,
         });
         setFavorites((prev) => ({ ...prev, [isbn]: false }));
       } else {
-        await axios.post(`http://localhost:4000/api/wishlist/${isbn}`, {}, { withCredentials: true });
+        await axios.post(`${API}/api/wishlist/${isbn}`, {}, { withCredentials: true });
         setFavorites((prev) => ({ ...prev, [isbn]: true }));
       }
     } catch (err) {
@@ -81,7 +83,7 @@ const BestPage: React.FC = () => {
   // ✅ 장바구니 추가
   const addToCart = async (isbn: string) => {
     try {
-      await axios.post(`http://localhost:4000/api/cart/${isbn}`, {}, { withCredentials: true });
+      await axios.post(`${API}/api/cart/${isbn}`, {}, { withCredentials: true });
       alert("🛒 장바구니에 추가되었습니다!");
     } catch (err) {
       console.error("❌ 장바구니 추가 실패:", err);
@@ -96,7 +98,7 @@ const BestPage: React.FC = () => {
       setError(null);
 
       try {
-        const res = await axios.get<Book[]>("http://localhost:4000/api/books/bestseller");
+        const res = await axios.get<Book[]>(`${API}/api/books/bestseller`);
         const fetchedBooks = res.data;
         setBooks(Array.isArray(fetchedBooks) ? fetchedBooks : []);
 
@@ -105,7 +107,7 @@ const BestPage: React.FC = () => {
         await Promise.all(
           fetchedBooks.map(async (book) => {
             try {
-              const res = await axios.get<Review[]>(`http://localhost:4000/api/reviews/${book.isbn}`);
+              const res = await axios.get<Review[]>(`${API}/api/reviews/${book.isbn}`);
               const reviews = res.data;
               if (reviews.length > 0) {
                 const avgUserRating =

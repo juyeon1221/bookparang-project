@@ -29,11 +29,13 @@ export default function SearchFilter({ onFilterChange, onCategoryLoad }: SearchF
   const [keyword] = useState<string>("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get<ApiCategory[]>(
-          "http://localhost:4000/api/books/categories"
+          `${API}/api/books/categories`
         );
         const formatted = res.data.map((c) => ({
           id: c.categoryId,

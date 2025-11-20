@@ -71,7 +71,7 @@ export const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "lax", // ✅ 크로스 도메인 허용
-      secure: false,   // ✅ 로컬에서는 false, 배포 시 true
+      secure: true,   // ✅ 로컬에서는 false, 배포 시 true
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
     });
 

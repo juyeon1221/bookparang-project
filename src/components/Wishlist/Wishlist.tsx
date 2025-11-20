@@ -13,11 +13,13 @@ const Wishlist: React.FC = () => {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 찜 목록 불러오기
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const res = await axios.get<WishlistItem[]>("http://localhost:4000/api/wishlist", {
+        const res = await axios.get<WishlistItem[]>(`${API}/api/wishlist`, {
           withCredentials: true,
         });
         console.log("💖 WISHLIST DATA:", res.data);
@@ -32,7 +34,7 @@ const Wishlist: React.FC = () => {
   // ✅ 개별 삭제
   const removeItem = async (isbn: string) => {
     try {
-      await axios.delete(`http://localhost:4000/api/wishlist/${isbn}`, {
+      await axios.delete(`${API}/api/wishlist/${isbn}`, {
         withCredentials: true,
       });
       setWishlist((prev) => prev.filter((item) => item.bookIsbn !== isbn));
@@ -57,7 +59,7 @@ const Wishlist: React.FC = () => {
     try {
       for (const isbn of selectedItems) {
         await axios.post(
-          `http://localhost:4000/api/cart/${isbn}`,
+          `${API}/api/cart/${isbn}`,
           {},
           { withCredentials: true }
         );

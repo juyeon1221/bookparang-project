@@ -4,6 +4,8 @@ import Book from "../models/Book.js";
 import auth from "../middlewares/auth.js";
 
 const router = express.Router();
+const API_BASE_URL = process.env.API_BASE_URL;
+
 
 /**
  * ✅ [POST] /api/wishlist/:isbn
@@ -26,10 +28,10 @@ router.post("/:isbn", auth, async (req, res) => {
     // 없으면 Book API에서 가져와 저장
     if (!book) {
       try {
-        const resBook = await axios.get(`http://localhost:4000/api/books/detail/${isbn}`);
+        const resBook = await axios.get(`${API_BASE_URL}/api/books/detail/${isbn}`);
         const newBook = resBook.data;
 
-        // Book 모델 스키마에 맞춰 변환 (예시)
+        // Book 모델 스키마에 맞춰 변환
         book = await Book.create({
           isbn: newBook.isbn,
           title: newBook.title,
@@ -113,7 +115,6 @@ router.get("/", auth, async (req, res) => {
       isbn: { $in: list.map((w) => w.bookIsbn) },
     }).select("isbn title author image salePrice");
 
-    // ✅ 여기! list를 map 해야 함
     console.log("💬 list 타입:", typeof list, Array.isArray(list));
     const merged = list.map((w) => ({
       bookIsbn: w.bookIsbn,

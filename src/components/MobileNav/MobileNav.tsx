@@ -18,10 +18,12 @@ export default function MobileNav() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get(`${API}/api/users/me`, {
           withCredentials: true,
         });
         setIsLoggedIn(!!res.data);

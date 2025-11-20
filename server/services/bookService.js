@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// ✅ 코멘트 목록 (순환용)
+// ✅ 코멘트 목록
 const comments = [
   "요즘 제일 핫한 책",
   "입소문 난 신간!",
@@ -45,8 +45,8 @@ export const fetchBooks = async (queryType, category, sort) => {
 
   let start = 1;
   const MAX_RESULTS = 50;   // 알라딘 요청 단위
-  const TARGET_COUNT = 16;  // ✅ 우리가 필요한 권 수
-  const MAX_LOOPS = 5;      // ✅ 최대 반복 횟수 제한
+  const TARGET_COUNT = 16;  // 필요한 권 수
+  const MAX_LOOPS = 5;      // 최대 반복 횟수 제한
 
   console.log(`🚀 [fetchBooks] ${queryType} 요청 시작 | category=${category || "전체"}`);
 

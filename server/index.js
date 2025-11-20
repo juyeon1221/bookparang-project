@@ -11,11 +11,19 @@ import cartRoutes from "./routes/carts.js";
 import purchaseRoutes from "./routes/purchases.js";
 import inquiryRoutes from "./routes/inquiry.js";
 import reportRoutes from "./routes/reports.js";
+import readingRecordRoutes from "./routes/readingRecord.js"
 import cookieParser from "cookie-parser";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
 
-dotenv.config({ path: "./server/.env" });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, ".env") });
+
+console.log("⭐ API_BASE_URL =", process.env.API_BASE_URL); 
+console.log("⭐ CLIENT_URL =", process.env.CLIENT_URL);
 
 const app = express();
 const PORT = 4000;
@@ -29,7 +37,7 @@ if (!fs.existsSync(uploadDir)) {
 // ✅ CORS 설정 (쿠키 포함)
 app.use(
   cors({
-    origin: "http://localhost:5173", // 프론트 주소
+    origin: process.env.CLIENT_URL, // 프론트 주소
     credentials: true, // 쿠키 허용
   })
 );
@@ -63,6 +71,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/reading-record", readingRecordRoutes);
 app.use("/api/auth", userRoutes);
 
 // ✅ 알라딘 API 프록시
@@ -88,5 +97,5 @@ app.get("/api/aladin", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at ${process.env.CLIENT_URL}`);
 });

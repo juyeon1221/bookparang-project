@@ -19,6 +19,8 @@ export default function EditProfile() {
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const [profileFile, setProfileFile] = useState<File | null>(null);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 토스트 메시지
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "" }>({
     message: "",
@@ -34,7 +36,7 @@ export default function EditProfile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/users/me", {
+        const res = await axios.get(`${API}/api/users/me`, {
           withCredentials: true,
         });
         setUser(res.data);
@@ -71,7 +73,7 @@ export default function EditProfile() {
 
     try {
       const res = await axios.get(
-        `http://localhost:4000/api/users/check-nickname?nickname=${encodeURIComponent(
+        `${API}/api/users/check-nickname?nickname=${encodeURIComponent(
           newNickname
         )}`
       );
@@ -115,14 +117,14 @@ export default function EditProfile() {
     if (profileFile) formData.append("profileImage", profileFile);
 
     try {
-      await axios.put("http://localhost:4000/api/users/update", formData, {
+      await axios.put(`${API}/api/users/update`, formData, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       showToast("회원정보가 성공적으로 수정되었습니다!", "success");
 
-      const refreshed = await axios.get("http://localhost:4000/api/users/me", {
+      const refreshed = await axios.get("${API}/api/users/me", {
         withCredentials: true,
       });
       setUser(refreshed.data);
@@ -142,7 +144,7 @@ export default function EditProfile() {
   const handleLogout = async () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) return;
     try {
-      await axios.post("http://localhost:4000/api/users/logout", {}, { withCredentials: true });
+      await axios.post(`${API}/api/users/logout`, {}, { withCredentials: true });
       showToast("로그아웃 되었습니다.", "success");
       setTimeout(() => (window.location.href = "/"), 1500);
     } catch {
@@ -156,7 +158,7 @@ export default function EditProfile() {
     const confirmDelete = window.confirm("정말 탈퇴하시겠습니까? 복구할 수 없습니다!");
     if (!confirmDelete) return;
     try {
-      await axios.delete(`http://localhost:4000/api/users/delete/${user.userId}`, {
+      await axios.delete(`${API}/api/users/delete/${user.userId}`, {
         withCredentials: true,
       });
       showToast("회원 탈퇴가 완료되었습니다.", "success");

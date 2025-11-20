@@ -14,13 +14,15 @@ export default function MyReviewList({ isbn, refresh }: MyReviewListProps) {
   const [book, setBook] = useState<any>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 함수는 useEffect 밖으로 분리
   const fetchBookAndReviews = async () => {
     if (!isbn) return;
     try {
       const [bookRes, reviewRes] = await Promise.all([
-        axios.get(`/api/books/detail/${isbn}`),
-        axios.get(`/api/reviews/${isbn}`),
+        axios.get(`${API}/api/books/detail/${isbn}`),
+        axios.get(`${API}/api/reviews/${isbn}`),
       ]);
       setBook(bookRes.data);
       setReviews(reviewRes.data);

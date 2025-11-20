@@ -13,6 +13,8 @@ function LoginPage() {
   const [form, setForm] = useState({ userId: "", password: "" });
   const [message, setMessage] = useState("");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -22,7 +24,7 @@ function LoginPage() {
     try {
       // ✅ 로그인 요청
       const res = await axios.post(
-        "http://localhost:4000/api/users/login",
+        `${API}/api/users/login`,
         form,
         { withCredentials: true }
       );
@@ -31,7 +33,7 @@ function LoginPage() {
       alert("✅ 로그인 성공!");
 
       // ✅ 로그인 후 내 정보(role 포함) 요청
-      const profileRes = await axios.get("http://localhost:4000/api/users/me", {
+      const profileRes = await axios.get(`${API}/api/users/me`, {
         withCredentials: true,
       });
 

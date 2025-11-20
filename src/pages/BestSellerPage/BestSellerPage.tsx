@@ -19,6 +19,8 @@ export default function BestSellerPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("종합 베스트");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const isMobile = useMediaQuery("(max-width: 1200px)"); // ✅ 모바일 감지
 
   // ✅ 찜 토글
@@ -34,13 +36,13 @@ export default function BestSellerPage() {
 
     try {
       if (favorites[isbn]) {
-        await axios.delete(`http://localhost:4000/api/wishlist/${isbn}`, {
+        await axios.delete(`${API}/api/wishlist/${isbn}`, {
           withCredentials: true,
         });
         setFavorites((prev) => ({ ...prev, [isbn]: false }));
       } else {
         await axios.post(
-          `http://localhost:4000/api/wishlist/${isbn}`,
+          `${API}/api/wishlist/${isbn}`,
           {},
           { withCredentials: true }
         );
@@ -60,7 +62,7 @@ export default function BestSellerPage() {
 
     try {
       await axios.post(
-        `http://localhost:4000/api/cart/${isbn}`,
+        `${API}/api/cart/${isbn}`,
         {},
         { withCredentials: true }
       );
@@ -80,7 +82,7 @@ export default function BestSellerPage() {
       try {
         // ✅ 로그인 상태 확인
         try {
-          const res = await axios.get("http://localhost:4000/api/users/me", {
+          const res = await axios.get(`${API}/api/users/me`, {
             withCredentials: true,
           });
           setIsLoggedIn(!!res.data);
@@ -92,7 +94,7 @@ export default function BestSellerPage() {
         const params =
           selectedCategory === "종합 베스트" ? {} : { category: selectedCategory };
         const res = await axios.get<Book[]>(
-          "http://localhost:4000/api/books/bestseller",
+          `${API}/api/books/bestseller`,
           { params }
         );
 
@@ -108,7 +110,7 @@ export default function BestSellerPage() {
             rating: b.rating ?? 0,
             image:
               b.image ??
-              `https://via.placeholder.com/150?text=${encodeURIComponent(
+              `https://placehold.co/150?text=${encodeURIComponent(
                 b.title.slice(0, 15)
               )}`,
             publisher: b.publisher ?? "",
@@ -126,7 +128,7 @@ export default function BestSellerPage() {
             if (!book.isbn) return;
             try {
               const res = await axios.get<Review[]>(
-                `http://localhost:4000/api/reviews/${book.isbn}`
+                `${API}/api/reviews/${book.isbn}`
               );
               const reviews = res.data;
               if (reviews.length > 0) {
@@ -149,7 +151,7 @@ export default function BestSellerPage() {
               if (!book.isbn) return;
               try {
                 const res = await axios.get(
-                  `http://localhost:4000/api/wishlist/${book.isbn}`,
+                  `${API}/api/wishlist/${book.isbn}`,
                   { withCredentials: true }
                 );
                 favMap[book.isbn] = res.data.isFavorited;

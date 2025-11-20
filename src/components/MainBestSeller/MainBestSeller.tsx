@@ -6,7 +6,7 @@ import SkeletonBookCard from "./SkeletonBookCard";
 import styles from "./MainBestSeller.module.css";
 import type { Book } from "../../types/books";
 
-// ✅ 서버 데이터 (ebookCategories.json 기반)
+// ✅ 서버 데이터
 const ebookCategories = [
   { id: 1, name: "소설" },
   { id: 55889, name: "시/에세이" },
@@ -38,6 +38,8 @@ export default function MainBestSeller() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 베스트셀러 불러오기
   useEffect(() => {
     const fetchBestSellers = async () => {
@@ -59,7 +61,7 @@ export default function MainBestSeller() {
         console.log("🛰️ 요청 params:", params);
 
         const res = await axios.get<Book[]>(
-          "http://localhost:4000/api/books/bestseller",
+          `${API}/api/books/bestseller`,
           { params }
         );
 
@@ -70,9 +72,10 @@ export default function MainBestSeller() {
             isbn: b.isbn ?? `temp-${i}`,
             image:
               b.image ??
-              `https://via.placeholder.com/150?text=${encodeURIComponent(
+              `https://placehold.co/150?text=${encodeURIComponent(
                 b.title.slice(0, 12)
-              )}`,
+              )}`
+            ,
           }));
 
         setBooks(mapped.slice(0, 12)); // ✅ 12권만 표시
@@ -101,9 +104,8 @@ export default function MainBestSeller() {
       <div className={styles.categoryTabsWrapper}>
         <ul className={styles.categoryTabs}>
           <li
-            className={`${styles.tab} ${
-              activeTab === "종합 베스트셀러" ? styles.active : ""
-            }`}
+            className={`${styles.tab} ${activeTab === "종합 베스트셀러" ? styles.active : ""
+              }`}
             onClick={() => handleTabClick("종합 베스트셀러")}
           >
             종합
@@ -112,9 +114,8 @@ export default function MainBestSeller() {
           {previewCategories.map((cat) => (
             <li
               key={cat.id}
-              className={`${styles.tab} ${
-                activeTab === cat.name ? styles.active : ""
-              }`}
+              className={`${styles.tab} ${activeTab === cat.name ? styles.active : ""
+                }`}
               onClick={() => handleTabClick(cat.name)}
             >
               {cat.name}

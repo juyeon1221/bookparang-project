@@ -6,11 +6,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
         console.log("🟡 checkAuth 실행 중...");
-        const res = await axios.get("http://localhost:4000/api/auth/check", {
+        const res = await axios.get(`${API}/api/auth/check`, {
           withCredentials: true,
         });
         console.log("✅ 로그인 확인 성공:", res.data);
@@ -32,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await axios.post("http://localhost:4000/api/users/logout", {}, { withCredentials: true });
+      await axios.post(`${API}/api/users/logout`, {}, { withCredentials: true });
       setUser(null);
     } catch (err) {
       console.error("❌ 로그아웃 실패:", err);

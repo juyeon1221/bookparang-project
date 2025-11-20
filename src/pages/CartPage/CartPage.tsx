@@ -14,13 +14,15 @@ const CartPage: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   const navigate = useNavigate();
 
   // ✅ 장바구니 목록 불러오기
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await axios.get<CartItem[]>("http://localhost:4000/api/cart", {
+        const res = await axios.get<CartItem[]>(`${API}/api/cart`, {
           withCredentials: true,
         });
         console.log("🛒 CART DATA:", res.data);
@@ -35,7 +37,7 @@ const CartPage: React.FC = () => {
   // ✅ 개별 아이템 삭제
   const removeItem = async (isbn: string) => {
     try {
-      await axios.delete(`http://localhost:4000/api/cart/${isbn}`, {
+      await axios.delete(`${API}/api/cart/${isbn}`, {
         withCredentials: true,
       });
       setCart((prev) => prev.filter((item) => item.bookIsbn !== isbn));
@@ -60,7 +62,7 @@ const CartPage: React.FC = () => {
     try {
       for (const isbn of selectedItems) {
         await axios.post(
-          `http://localhost:4000/api/wishlist/${isbn}`,
+          `${API}/api/wishlist/${isbn}`,
           {},
           { withCredentials: true }
         );
@@ -96,7 +98,7 @@ const CartPage: React.FC = () => {
 
     try {
       await axios.post(
-        "http://localhost:4000/api/purchase",
+        `${API}/api/purchase`,
         { books: selectedBooks.map((b) => ({ isbn: b.id, price: b.price })) },
         { withCredentials: true }
       );

@@ -33,6 +33,8 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingComment, setEditingComment] = useState("");
 
+  const API = import.meta.env.VITE_API_URL ?? "";
+
   // ✅ 리뷰 등록
   const handleSubmit = async () => {
     if (!isLoggedIn) {
@@ -47,7 +49,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
 
     try {
       await axios.post(
-        `http://localhost:4000/api/reviews/${isbn}`,
+        `${API}/api/reviews/${isbn}`,
         {
           rating: userRating,
           comment: userComment,
@@ -70,7 +72,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
   const handleEdit = async (id: string) => {
     try {
       await axios.put(
-        `http://localhost:4000/api/reviews/${id}`,
+        `${API}/api/reviews/${id}`,
         { comment: editingComment },
         { withCredentials: true }
       );
@@ -87,7 +89,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
   const handleDelete = async (id: string) => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     try {
-      await axios.delete(`http://localhost:4000/api/reviews/${id}`, {
+      await axios.delete(`${API}/api/reviews/${id}`, {
         withCredentials: true,
       });
       await fetchReviews();
