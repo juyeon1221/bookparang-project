@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./ThemeToggle.module.css";
 import moon from "./moon.svg";
 import sun from "./sun.svg";

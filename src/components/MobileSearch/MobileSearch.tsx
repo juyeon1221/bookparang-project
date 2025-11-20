@@ -11,21 +11,16 @@ interface MobileSearchProps {
 export default function MobileSearch({ onClose }: MobileSearchProps) {
   const [query, setQuery] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hoveredTitle, setHoveredTitle] = useState<string | null>(null);
+  // const [hoveredTitle, setHoveredTitle] = useState<string | null>(null); // 이 줄을 삭제합니다.
   const navigate = useNavigate();
 
-  const { books, suggestions, loading, fetchSuggestions, searchBooks } =
+  const { books, suggestions, loading, fetchSuggestions } =
     useBookSearchWithAutoComplete();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
     fetchSuggestions(value);
-  };
-
-  const handleHover = (title: string) => {
-    setHoveredTitle(title);
-    searchBooks(title);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,7 +72,6 @@ export default function MobileSearch({ onClose }: MobileSearchProps) {
                     <li
                       key={idx}
                       className={styles.item}
-                      onMouseEnter={() => handleHover(title)}
                       onClick={() => handleSuggestionClick(title)}
                     >
                       {title}

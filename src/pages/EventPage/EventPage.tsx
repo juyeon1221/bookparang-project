@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./EventPage.module.css";
 import img1 from "./이벤트페이지_배너1.png";

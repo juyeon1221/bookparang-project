@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./ReadingCalendar.module.css";
 
 const ModalRecordView = ({ records, onDelete, onAddClick }) => {
